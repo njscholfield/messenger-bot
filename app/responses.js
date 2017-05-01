@@ -405,6 +405,7 @@ function sendPersonalMessage(recipientId) {
     if(error) {
       console.log(error);
     } else {
+      console.log(body);
       firstName = body.first_name;
     }
   });
