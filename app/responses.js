@@ -406,6 +406,7 @@ function getFirstName(recipientId) {
         console.log(error);
         resolve('Stranger');
       } else {
+        console.log(body);
         resolve(body.first_name);
       }
     });
@@ -415,6 +416,7 @@ function getFirstName(recipientId) {
 function sendPersonalMessage(recipientId) {
   getFirstName(recipientId)
     .then(function success(firstName) {
+      console.log(firstName);
       var message = `Hi ${firstName}, nice to meet you!`;
       var messageData = {
         recipient: {
