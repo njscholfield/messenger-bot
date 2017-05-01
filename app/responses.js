@@ -396,33 +396,36 @@ function sendAccountLinking(recipientId) {
 }
 
 function getFirstName(recipientId) {
-  request({
-    uri: `https://graph.facebook.com/v2.6/${recipientId}`,
-    qs: { fields: 'first_name', access_token: PAGE_ACCESS_TOKEN },
-    method: 'GET'
-  }, function(error, response, body) {
-    if(error) {
-      console.log(error);
-      return 'Stranger';
-    } else {
-      return body.first_name;
-    }
+  return new Promise(function(resolve) {
+    request({
+      uri: `https://graph.facebook.com/v2.6/${recipientId}`,
+      qs: { fields: 'first_name', access_token: PAGE_ACCESS_TOKEN },
+      method: 'GET'
+    }, function(error, response, body) {
+      if(error) {
+        console.log(error);
+        resolve('Stranger');
+      } else {
+        resolve(body.first_name);
+      }
+    });
   });
 }
 
 function sendPersonalMessage(recipientId) {
-  var message = `Hi ${getFirstName(recipientId)}, nice to meet you!`;
-
-  var messageData = {
-    recipient: {
-      id: recipientId
-    },
-    message: {
-      text: message
-    }
-  };
-
-  callSendAPI(messageData);
+  getFirstName(recipientId)
+    .then(function success(firstName) {
+      var message = `Hi ${firstName}, nice to meet you!`;
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: message
+        }
+      };
+      callSendAPI(messageData);
+    });
 }
 
 /*
