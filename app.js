@@ -247,7 +247,7 @@ function receivedMessage(event) {
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
 
-    responses.sendTextMessage(senderID, "Quick reply tapped");
+    responses.sendTextMessage(senderID, "Thanks for your vote!");
     return;
   }
 
@@ -311,6 +311,10 @@ function receivedMessage(event) {
 
       case 'personal':
         responses.sendPersonalMessage(senderID);
+        break;
+
+      case 'meeting topic':
+        responses.sendMeetingTopicPoll(senderID);
         break;
 
       default:

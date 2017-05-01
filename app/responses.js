@@ -429,6 +429,35 @@ function sendPersonalMessage(recipientId) {
     });
 }
 
+function sendMeetingTopicPoll(recipientId) {
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: "What should this week's topic be?",
+      quick_replies: [
+        {
+          "content_type":"text",
+          "title":"Gun Control",
+          "payload": { type: "meeting_topic", date: "9/1/17", choice: "gun_control" }
+        },
+        {
+          "content_type":"text",
+          "title":"Animal Testing",
+          "payload": { type: "meeting_topic", date: "9/1/17", choice: "animal_testing" }
+        },
+        {
+          "content_type":"text",
+          "title":"Social Media",
+          "payload": { type: "meeting_topic", date: "9/1/17", choice: "social_media" }
+        }
+      ]
+    }
+  };
+  callSendAPI(messageData);
+}
+
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll
  * get the message id in a response
@@ -460,5 +489,5 @@ function callSendAPI(messageData) {
 }
 
 module.exports = {
-  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage
+  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage, sendMeetingTopicPoll
 };
