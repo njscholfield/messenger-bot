@@ -450,7 +450,7 @@ function sendMeetingTopicPoll(recipientId) {
         {
           "content_type":"text",
           "title":"Social Media",
-          "payload": JSON.stringify){ type: 'meeting_topic', date: '9/1/17', choice: 'social_media' })
+          "payload": JSON.stringify({ type: 'meeting_topic', date: '9/1/17', choice: 'social_media' })
         }
       ]
     }
