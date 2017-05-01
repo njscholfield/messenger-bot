@@ -440,17 +440,17 @@ function sendMeetingTopicPoll(recipientId) {
         {
           "content_type":"text",
           "title":"Gun Control",
-          "payload": { type: "meeting_topic", date: "9/1/17", choice: "gun_control" }
+          "payload": JSON.stringify({ type: 'meeting_topic', date: '9/1/17', choice: 'gun_control' })
         },
         {
           "content_type":"text",
           "title":"Animal Testing",
-          "payload": { type: "meeting_topic", date: "9/1/17", choice: "animal_testing" }
+          "payload": JSON.stringify({ type: 'meeting_topic', date: '9/1/17', choice: 'animal_testing' })
         },
         {
           "content_type":"text",
           "title":"Social Media",
-          "payload": { type: "meeting_topic", date: "9/1/17", choice: "social_media" }
+          "payload": JSON.stringify){ type: 'meeting_topic', date: '9/1/17', choice: 'social_media' })
         }
       ]
     }
