@@ -395,6 +395,33 @@ function sendAccountLinking(recipientId) {
   callSendAPI(messageData);
 }
 
+function sendPersonalMessage(recipientId) {
+  var firstName;
+  request({
+    uri: `https://graph.facebook.com/v2.6/${recipientId}`,
+    qs: { fields: 'first_name', access_token: PAGE_ACCESS_TOKEN },
+    method: 'GET'
+  }, function(error, response, body) {
+    if(error) {
+      console.log(error);
+    } else {
+      firstName = body.first_name;
+    }
+  });
+  var message = `Hi ${firstName}, nice to meet you!`;
+
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: message
+    }
+  };
+
+  callSendAPI(messageData);
+}
+
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll
  * get the message id in a response
@@ -426,5 +453,5 @@ function callSendAPI(messageData) {
 }
 
 module.exports = {
-  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage
+  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage
 };

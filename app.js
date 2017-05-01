@@ -309,6 +309,10 @@ function receivedMessage(event) {
         responses.sendAccountLinking(senderID);
         break;
 
+      case 'personal':
+        responses.sendPersonalMessage(senderID);
+        break;
+
       default:
         responses.sendTextMessage(senderID, messageText);
     }
