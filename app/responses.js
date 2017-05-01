@@ -407,6 +407,7 @@ function getFirstName(recipientId) {
         resolve('Stranger');
       } else {
         console.log(body);
+        console.log(body.first_name);
         resolve(body.first_name);
       }
     });
