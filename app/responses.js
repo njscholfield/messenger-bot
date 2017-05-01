@@ -298,17 +298,17 @@ function sendQuickReply(recipientId) {
         {
           'content_type':'text',
           'title':'Action',
-          'payload':'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION'
+          'payload': JSON.stringify({type: 'test', message: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_ACTION' })
         },
         {
           'content_type':'text',
           'title':'Comedy',
-          'payload':'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY'
+          'payload':JSON.stringify({type: 'test', message: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_COMEDY' })
         },
         {
           'content_type':'text',
           'title':'Drama',
-          'payload':'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA'
+          'payload':JSON.stringify({type: 'test', message: 'DEVELOPER_DEFINED_PAYLOAD_FOR_PICKING_DRAMA' })
         }
       ]
     }
