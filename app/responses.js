@@ -402,6 +402,7 @@ function getFirstName(recipientId) {
       qs: { fields: 'first_name', access_token: PAGE_ACCESS_TOKEN },
       method: 'GET'
     }, function(error, response, body) {
+      body = JSON.parse(body);
       if(error) {
         console.log(error);
         resolve('Stranger');
