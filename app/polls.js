@@ -3,13 +3,6 @@ var current = models.current;
 var poll = models.poll;
 var choice = models.choice;
 
-current.findOne({}, function(err, result) {
-  if(!result) {
-    var newCurrent = new current({});
-    newCurrent.save();
-  }
-});
-
 exports.createNewPoll = function(formData) {
   getChoices(formData.choices)
     .then(function(choices) {
@@ -56,6 +49,8 @@ exports.getCurrentPoll = function() {
           console.log(err);
           return null;
         } else {
+          console.log('getCurrentPoll');
+          console.log(result);
           return result;
         }
       });
