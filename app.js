@@ -27,7 +27,7 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 require('./app/routes.js')(app);
-const polls = require('./polls.js');
+const polls = require('./app/polls.js');
 
 /*
  * Be sure to setup your config values before running this code. You can
