@@ -1,6 +1,9 @@
+/* eslint quotes: 0 */
+
 const request = require('request');
 const SERVER_URL = process.env.SERVER_URL;
 const PAGE_ACCESS_TOKEN = process.env.MESSENGER_PAGE_ACCESS_TOKEN;
+const polls = require('./polls');
 
 /*
  * Send an image using the Send API.
@@ -430,6 +433,7 @@ function sendPersonalMessage(recipientId) {
 }
 
 function sendMeetingTopicPoll(recipientId) {
+  console.log(polls.getCurrentPoll());
   var messageData = {
     recipient: {
       id: recipientId
@@ -440,17 +444,17 @@ function sendMeetingTopicPoll(recipientId) {
         {
           "content_type":"text",
           "title":"Gun Control",
-          "payload": JSON.stringify({ type: 'meeting_topic', date: '9/1/17', choice: 'gun_control' })
+          "payload": JSON.stringify({ type: 'poll', title: '9/1/17', choice: 'gun_control' })
         },
         {
           "content_type":"text",
           "title":"Animal Testing",
-          "payload": JSON.stringify({ type: 'meeting_topic', date: '9/1/17', choice: 'animal_testing' })
+          "payload": JSON.stringify({ type: 'poll', title: '9/1/17', choice: 'animal_testing' })
         },
         {
           "content_type":"text",
           "title":"Social Media",
-          "payload": JSON.stringify({ type: 'meeting_topic', date: '9/1/17', choice: 'social_media' })
+          "payload": JSON.stringify({ type: 'poll', title: '9/1/17', choice: 'social_media' })
         }
       ]
     }

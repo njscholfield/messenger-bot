@@ -1,4 +1,4 @@
-/* eslint quotes: 0, no-unused-vars: 0 */
+/* eslint quotes: 0, no-unused-vars: 1 */
 
 /*
  * Copyright 2016-present, Facebook, Inc.
@@ -25,6 +25,8 @@ app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
+
+require('./app/routes.js')(app);
 
 /*
  * Be sure to setup your config values before running this code. You can
@@ -73,7 +75,6 @@ app.get('/webhook', function(req, res) {
     res.sendStatus(403);
   }
 });
-
 
 /*
  * All callbacks for Messenger are POST-ed. They will be sent to the same
@@ -244,7 +245,7 @@ function receivedMessage(event) {
     return;
   } else if (quickReply) {
     var quickReplyPayload = quickReply.payload;
-    
+
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
 
