@@ -65,7 +65,18 @@ exports.recordVote = function(voteData) {
 
 exports.getResults = function(req, res) {
   poll.find({}, function(err, results) {
-    if(err) console.log(err);
-    res.status(200).json(results);
+    if(err) {
+      console.log(err);
+      return res.status(500).json({ success: false, message: 'err'});
+    } else {
+      current.findOne({}, function(err, result) {
+        if(err) {
+          console.log(err);
+          return res.status(500).json({ success: false, message: 'err'});
+        } else {
+          return res.status(200).json({results: results, liveQuestionID: result.poll});
+        }
+      });
+    }
   });
 };

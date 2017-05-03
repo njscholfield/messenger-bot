@@ -4,16 +4,42 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Polls | Messenger Bot Management</title>
+    <title>Results | Messenger Bot Management</title>
     <link rel="stylesheet" href="https://noahscholfield.com/css/bootstrap-yeti.min.css">
     <link rel="stylesheet" href="../css/polls.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.1/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
   </head>
   <body>
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Poll Results</h1>
+      </div>
+    </div>
     <div class="container">
-      <div id="results" v-for="result in results">
-        <pre><code>{{ result }}</code></pre>
+      <div id="results">
+        <div :class="{'panel panel-success' : (result._id === liveQuestionID)}" v-for="result in sortedResults" :key="result._id">
+          <div class="panel-heading" v-if="result._id === liveQuestionID">
+            <h3 class="panel-title">Current Question</h3>
+          </div>
+          <div class="panel-body">
+            <h3 class="text-primary">{{ result.title }}</h3>
+            <p>{{ result.question }}</p>
+            <table class="table">
+              <tr>
+                <th>Choice</th>
+                <th>Votes</th>
+                <th>Percentage</th>
+              </tr>
+              <tr v-for="choice in result.choices">
+                <td>{{ choice.name }}</td>
+                <td>{{ choice.numberOfVotes }}</td>
+                <td>{{ choice.numberOfVotes / result.numberOfVotes | percentage(2) }}</td>
+              </tr>
+            </table>
+            <h6>TOTAL NUMBER OF VOTES: {{ result.numberOfVotes }}</h6>
+          </div>
+        </div>
       </div>
     </div>
   </body>

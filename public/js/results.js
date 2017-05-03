@@ -3,15 +3,35 @@
 var results = new Vue({
   el: '#results',
   data: {
-    results: {}
+    results: [],
+    liveQuestionID: 0
   },
   methods: {
-    getResults: fetchResults
+    getResults() {
+      fetch('/api/results')
+        .then(blob => blob.json())
+        .then(data => {
+          this.results = data.results;
+          this.liveQuestionID = data.liveQuestionID;
+        })
+        .catch(err => console.log(err));
+    }
+  },
+  computed: {
+    sortedResults() {
+      return this.results.sort((a, b) => (a > b) ? -1 : 1);
+    }
+  },
+  mounted() {
+    this.getResults();
+  },
+  filters: {
+    percentage: function(value, decimals) {
+      if(!value) value = 0;
+      if(!decimals) decimals = 0;
+
+      value = value * 100;
+      return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals) + '%';
+    }
   }
 });
-
-function fetchResults() {
-  fetch('/api/results')
-    .then(blob => blob.json())
-    .then(data => results.results = data);
-}
