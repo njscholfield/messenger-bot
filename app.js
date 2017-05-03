@@ -27,6 +27,7 @@ app.use(bodyParser.json({ verify: verifyRequestSignature }));
 app.use(express.static('public'));
 
 require('./app/routes.js')(app);
+const polls = require('./polls.js');
 
 /*
  * Be sure to setup your config values before running this code. You can
@@ -245,7 +246,9 @@ function receivedMessage(event) {
     return;
   } else if (quickReply) {
     var quickReplyPayload = quickReply.payload;
-
+    if(quickReplyPayload.type === 'poll') {
+      polls.recordVote(quickReplyPayload);
+    }
     console.log("Quick reply for message %s with payload %s",
       messageId, quickReplyPayload);
 

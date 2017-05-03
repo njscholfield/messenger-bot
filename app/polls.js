@@ -55,3 +55,10 @@ exports.getCurrentPoll = function() {
     });
   });
 };
+
+exports.recordVote = function(voteData) {
+  poll.findOneAndUpdate({title: voteData.title, 'choices.name': voteData.choice}, {$inc: {'choices.$.numberOfVotes': 1}}, {new: true}, function(err, result) {
+    if(err) console.log(err);
+    console.log(result);
+  });
+};
