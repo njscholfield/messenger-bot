@@ -433,7 +433,12 @@ function sendPersonalMessage(recipientId) {
 }
 
 function sendMeetingTopicPoll(recipientId) {
-  console.log(polls.getCurrentPoll());
+  polls.getCurrentPoll()
+    .then(function success(result) {
+      console.log(result);
+    }, function error(err) {
+      console.log(err);
+    });
   var messageData = {
     recipient: {
       id: recipientId

@@ -38,22 +38,20 @@ var getChoices = function(choices) {
 };
 
 exports.getCurrentPoll = function() {
-  current.findOne({}, function(err, result) {
-    if(err) console.log(err);
-    else if(!result) {
-      return null;
-    } else {
-      var id = result.poll;
-      poll.findOne({_id: id}, function(err, result) {
-        if(err || !result) {
-          console.log(err);
-          return null;
-        } else {
-          console.log('getCurrentPoll');
-          console.log(result);
-          return result;
-        }
-      });
-    }
+  return new Promise(function(resolve, reject) {
+    current.findOne({}, function(err, result) {
+      if(err || !result) {
+        reject(err + ' or no current poll saved');
+      } else {
+        var id = result.poll;
+        poll.findOne({_id: id}, function(err, result) {
+          if(err || !result) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        });
+      }
+    });
   });
 };
