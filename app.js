@@ -1,4 +1,4 @@
-/* eslint quotes: 0, no-unused-vars: 1 */
+/* eslint quotes: 0, no-unused-vars: 0 */
 
 /*
  * Copyright 2016-present, Facebook, Inc.
@@ -246,6 +246,7 @@ function receivedMessage(event) {
     return;
   } else if (quickReply) {
     var quickReplyPayload = quickReply.payload;
+    quickReplyPayload = JSON.parse(quickReplyPayload);
     if(quickReplyPayload.type === 'poll') {
       polls.recordVote(quickReplyPayload);
     }
