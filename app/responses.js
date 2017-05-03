@@ -434,32 +434,35 @@ function sendPersonalMessage(recipientId) {
 
 function sendMeetingTopicPoll(recipientId) {
   polls.getCurrentPoll()
-    .then(function success(result) {
-      console.log(result);
+    .then(function success(pollData) {
+      createQuestion(recipientId, pollData);
     }, function error(err) {
       console.log(err);
     });
+}
+
+function createQuestion(recipientId, pollData) {
   var messageData = {
     recipient: {
       id: recipientId
     },
     message: {
-      text: "What should this week's topic be?",
+      text: pollData.question,
       quick_replies: [
         {
           "content_type":"text",
-          "title":"Gun Control",
-          "payload": JSON.stringify({ type: 'poll', title: '9/1/17', choice: 'gun_control' })
+          "title": pollData.choices[0].name,
+          "payload": JSON.stringify({ type: 'poll', title: pollData.title, choice: pollData.choices[0].name })
         },
         {
           "content_type":"text",
-          "title":"Animal Testing",
-          "payload": JSON.stringify({ type: 'poll', title: '9/1/17', choice: 'animal_testing' })
+          "title": pollData.choices[1].name,
+          "payload": JSON.stringify({ type: 'poll', title: pollData.title, choice: pollData.choices[1].name })
         },
         {
           "content_type":"text",
-          "title":"Social Media",
-          "payload": JSON.stringify({ type: 'poll', title: '9/1/17', choice: 'social_media' })
+          "title": pollData.choices[2].name,
+          "payload": JSON.stringify({ type: 'poll', title: pollData.title, choice: pollData.choices[2].name })
         }
       ]
     }
