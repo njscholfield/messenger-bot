@@ -61,3 +61,11 @@ exports.recordVote = function(voteData) {
     if(err) console.log('Error counting vote: ' + err);
   });
 };
+
+
+exports.getResults = function(req, res) {
+  poll.find({}, function(err, results) {
+    if(err) console.log(err);
+    res.status(200).json(results);
+  });
+};

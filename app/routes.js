@@ -6,4 +6,8 @@ module.exports = function(app) {
     polls.createNewPoll(data);
     res.status(200).json({'success': true});
   });
+
+  app.get('/api/results/', function(req, res) {
+    polls.getResults(req, res);
+  });
 };
