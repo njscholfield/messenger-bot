@@ -31,7 +31,7 @@
                 <th>Votes</th>
                 <th>Percentage</th>
               </tr>
-              <tr v-for="choice in result.choices">
+              <tr v-for="choice in result.choices" :class="{info: (isGreatest(result, choice))}">
                 <td>{{ choice.name }}</td>
                 <td>{{ choice.numberOfVotes }}</td>
                 <td>{{ choice.numberOfVotes / result.numberOfVotes | percentage(2) }}</td>

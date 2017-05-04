@@ -34,6 +34,10 @@ var results = new Vue({
     },
     isLiveQ(result) {
       return result._id === this.liveQuestionID;
+    },
+    isGreatest(result, choice) {
+      var votes = result.choices.map(item => item.numberOfVotes);
+      return choice.numberOfVotes > 0 && Math.max.apply(null, votes) === choice.numberOfVotes;
     }
   },
   computed: {
