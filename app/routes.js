@@ -1,13 +1,15 @@
 module.exports = function(app) {
   const polls = require('./polls.js');
 
-  app.post('/api/createpoll/', function(req, res) {
-    var data = req.body;
-    polls.createNewPoll(data);
-    res.status(200).json({'success': true});
-  });
-
   app.get('/api/results/', function(req, res) {
     polls.getResults(req, res);
+  });
+
+  app.post('/api/createpoll/', function(req, res) {
+    polls.createNewPoll(req, res);
+  });
+
+  app.post('/api/current/', function(req, res) {
+    polls.changeCurrent(req, res);
   });
 };

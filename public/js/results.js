@@ -1,3 +1,4 @@
+/* eslint no-unused-vars: 0 */
 /* global Vue: false */
 
 var results = new Vue({
@@ -8,13 +9,31 @@ var results = new Vue({
   },
   methods: {
     getResults() {
-      fetch('/api/results')
+      fetch('/api/results/')
         .then(blob => blob.json())
         .then(data => {
           this.results = data.results;
           this.liveQuestionID = data.liveQuestionID;
         })
         .catch(err => console.log(err));
+    },
+    changeCurrent(id) {
+      var config = {
+        method: 'POST',
+        headers: new Headers({'Content-Type': 'application/json'}),
+        body: JSON.stringify({type: 'poll', id: id})
+      };
+      fetch('/api/current/', config)
+        .then(blob => blob.json())
+        .then(data => {
+          if(data.success) {
+            this.liveQuestionID = data.id;
+          } else { console.log(data.message); }
+        })
+        .catch(err => console.log(err));
+    },
+    isLiveQ(result) {
+      return result._id === this.liveQuestionID;
     }
   },
   computed: {

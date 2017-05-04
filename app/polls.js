@@ -3,7 +3,8 @@ var current = models.current;
 var poll = models.poll;
 var choice = models.choice;
 
-exports.createNewPoll = function(formData) {
+exports.createNewPoll = function(req, res) {
+  var formData = req.body;
   getChoices(formData.choices)
     .then(function(choices) {
       var newPoll = new poll({
@@ -14,10 +15,17 @@ exports.createNewPoll = function(formData) {
       });
 
       newPoll.save(function(err, product) {
-        if(err) console.log(err);
-        else if(formData.isCurrentQuestion) {
+        if(err) {
+          console.log(err);
+          res.status(500).json({success: false, message: err});
+        } else if(formData.isCurrentQuestion) {
           current.findOneAndUpdate({}, {$set: {poll: product._id}}, {new: true}, function(err) {
-            if(err) console.log(err);
+            if(err) {
+              console.log(err);
+              res.status(500).json({success: false, message: err});
+            } else {
+              res.status(200).json({success: true});
+            }
           });
         }
       });
@@ -54,6 +62,20 @@ exports.getCurrentPoll = function() {
       }
     });
   });
+};
+
+exports.changeCurrent = function(req, res) {
+  var data = req.body;
+  if(data.type === 'poll'){
+    current.findOneAndUpdate({}, {poll: data.id}, {new: true}, function(err, result) {
+      if(err) {
+        console.log(err);
+        res.status(500).json({success: false, message: err});
+      } else {
+        res.status(200).json({success: true, id: result.poll});
+      }
+    });
+  }
 };
 
 exports.recordVote = function(voteData) {

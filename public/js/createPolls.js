@@ -15,7 +15,6 @@ var inputForm = new Vue({
 });
 
 function submitNewPoll() {
-  console.log(inputForm.formData);
   var url = '/api/createpoll/';
   var config = {
     method: 'POST',
