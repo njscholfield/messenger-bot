@@ -19,7 +19,7 @@ var results = new Vue({
   },
   computed: {
     sortedResults() {
-      return this.results.sort((a, b) => (a > b) ? -1 : 1);
+      return this.results.sort((a, b) => (a._id > b._id) ? -1 : 1);
     }
   },
   mounted() {
