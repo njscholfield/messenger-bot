@@ -15,19 +15,20 @@ exports.createNewPoll = function(req, res) {
       });
 
       newPoll.save(function(err, product) {
-        if(err) {
+        if(err && err.code === 11000) {
+          return res.status(500).json({success: false, message: 'This title has already been used, please pick a new one.', fields: ['title']});
+        } else if(err) {
           console.log(err);
-          res.status(500).json({success: false, message: err});
+          return res.status(500).json({success: false, message: err.errmsg, fields: []});
         } else if(formData.isCurrentQuestion) {
           current.findOneAndUpdate({}, {$set: {poll: product._id}}, {new: true}, function(err) {
             if(err) {
               console.log(err);
-              res.status(500).json({success: false, message: err});
-            } else {
-              res.status(200).json({success: true});
+              return res.status(500).json({success: false, message: 'Error making this question live.', fields: []});
             }
           });
         }
+        res.status(200).json({success: true});
       });
     });
 };
@@ -76,6 +77,17 @@ exports.changeCurrent = function(req, res) {
       }
     });
   }
+};
+
+exports.deletePoll = function(req, res) {
+  var data = req.body;
+  poll.remove({_id: data.id}, function(err) {
+    if(err) {
+      res.status(500).json({ success: false, message: 'Error deleting poll'});
+    } else {
+      res.status(200).json({ success: true });
+    }
+  });
 };
 
 exports.recordVote = function(voteData) {

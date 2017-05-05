@@ -32,6 +32,21 @@ var results = new Vue({
         })
         .catch(err => console.log(err));
     },
+    deleteQ(id) {
+      var config = {
+        method: 'POST',
+        headers: new Headers({'Content-Type': 'application/json'}),
+        body: JSON.stringify({ id: id })
+      };
+      fetch('/api/deletepoll/', config)
+        .then(blob => blob.json())
+        .then(data => {
+          if(data.success) {
+            this.getResults();
+          } else { console.log(data.message); }
+        })
+        .catch(err => console.log(err));
+    },
     isLiveQ(result) {
       return result._id === this.liveQuestionID;
     },

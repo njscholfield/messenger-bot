@@ -40,6 +40,7 @@
             <h6>TOTAL NUMBER OF VOTES: {{ result.numberOfVotes }}</h6>
             <div v-if="!isLiveQ(result)">
               <button class="btn btn-success" @click="changeCurrent(result._id)">Make current question</button>
+              <button class="btn btn-danger" @click="deleteQ(result._id)">Delete</button>
               <hr>
             </div>
           </div>

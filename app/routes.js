@@ -9,6 +9,10 @@ module.exports = function(app) {
     polls.createNewPoll(req, res);
   });
 
+  app.post('/api/deletepoll/', function(req, res) {
+    polls.deletePoll(req, res);
+  });
+
   app.post('/api/current/', function(req, res) {
     polls.changeCurrent(req, res);
   });
