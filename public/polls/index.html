@@ -24,8 +24,6 @@
         <transition name="fade">
           <error-alert :message="error.message" v-show="error.visible" @hide="hide('error')"></error-alert>
         </transition>
-        <button class="btn btn-success" @click="show('success', 'This is a test')">Success</button>
-        <button class="btn btn-danger" @click="show('error', 'You messed something up')">Error</button>
       </div>
       <section id="newPollForm">
         <form v-on:submit.prevent="submit">
