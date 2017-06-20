@@ -410,11 +410,7 @@ function getName(recipientId) {
         console.log(error);
         resolve('Stranger');
       } else {
-        var name = {
-          first: body.first_name,
-          last: body.last_name
-        };
-        resolve(name);
+        resolve(body.first_name, body.last_name);
       }
     });
   });
@@ -422,8 +418,8 @@ function getName(recipientId) {
 
 function sendPersonalMessage(recipientId) {
   getName(recipientId)
-    .then(function success(name) {
-      var message = `Hi ${name.first} ${name.last}, nice to meet you!`;
+    .then(function success(firstName, lastName) {
+      var message = `Hi ${firstName} ${lastName}, nice to meet you!`;
       var messageData = {
         recipient: {
           id: recipientId
