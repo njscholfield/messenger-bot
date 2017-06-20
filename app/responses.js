@@ -398,11 +398,11 @@ function sendAccountLinking(recipientId) {
   callSendAPI(messageData);
 }
 
-function getFirstName(recipientId) {
+function getName(recipientId) {
   return new Promise(function(resolve) {
     request({
       uri: `https://graph.facebook.com/v2.6/${recipientId}`,
-      qs: { fields: 'first_name', access_token: PAGE_ACCESS_TOKEN },
+      qs: { fields: ['first_name', 'last_name'], access_token: PAGE_ACCESS_TOKEN },
       method: 'GET'
     }, function(error, response, body) {
       body = JSON.parse(body);
@@ -410,16 +410,20 @@ function getFirstName(recipientId) {
         console.log(error);
         resolve('Stranger');
       } else {
-        resolve(body.first_name);
+        var name = {
+          first: body.first_name,
+          last: body.last_name
+        };
+        resolve(name);
       }
     });
   });
 }
 
 function sendPersonalMessage(recipientId) {
-  getFirstName(recipientId)
-    .then(function success(firstName) {
-      var message = `Hi ${firstName}, nice to meet you!`;
+  getName(recipientId)
+    .then(function success(name) {
+      var message = `Hi ${name.first} ${name.last}, nice to meet you!`;
       var messageData = {
         recipient: {
           id: recipientId
