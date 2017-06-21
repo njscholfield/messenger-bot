@@ -253,7 +253,10 @@ function receivedMessage(event) {
     // If we receive a text message, check to see if it matches any special
     // keywords and send back the corresponding example. Otherwise, just echo
     // the text we received.
-    switch (messageText) {
+    messageText = messageText.toLowerCase();
+    messageText = messageText.split(' ');
+
+    switch (messageText[0]) {
       case 'image':
         responses.sendImageMessage(senderID);
         break;
@@ -286,23 +289,23 @@ function receivedMessage(event) {
         responses.sendReceiptMessage(senderID);
         break;
 
-      case 'quick reply':
+      case 'quick-reply':
         responses.sendQuickReply(senderID);
         break;
 
-      case 'read receipt':
+      case 'read-receipt':
         responses.sendReadReceipt(senderID);
         break;
 
-      case 'typing on':
+      case 'typing-on':
         responses.sendTypingOn(senderID);
         break;
 
-      case 'typing off':
+      case 'typing-off':
         responses.sendTypingOff(senderID);
         break;
 
-      case 'account linking':
+      case 'account-linking':
         responses.sendAccountLinking(senderID);
         break;
 
@@ -310,8 +313,12 @@ function receivedMessage(event) {
         responses.sendPersonalMessage(senderID);
         break;
 
-      case 'meeting topic':
+      case 'topic':
         responses.sendMeetingTopicPoll(senderID);
+        break;
+
+      case 'email':
+        responses.subscribeToEmails(senderID, messageText[1]);
         break;
 
       default:

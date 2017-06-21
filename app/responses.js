@@ -398,10 +398,10 @@ function sendAccountLinking(recipientId) {
   callSendAPI(messageData);
 }
 
-function getName(recipientId) {
+function getUserInfo(recipientId) {
   return new Promise(function(resolve) {
     request({
-      uri: `https://graph.facebook.com/v2.6/${recipientId}`,
+      uri: `https://graph.facebook.com/v2.9/${recipientId}`,
       qs: { fields: 'first_name,last_name', access_token: PAGE_ACCESS_TOKEN },
       method: 'GET'
     }, function(error, response, body) {
@@ -418,7 +418,7 @@ function getName(recipientId) {
 }
 
 function sendPersonalMessage(recipientId) {
-  getName(recipientId)
+  getUserInfo(recipientId)
     .then(function success(userInfo) {
       var message = `Hi ${userInfo.first_name} ${userInfo.last_name}, nice to meet you!`;
       var messageData = {
@@ -427,6 +427,31 @@ function sendPersonalMessage(recipientId) {
         },
         message: {
           text: message
+        }
+      };
+      callSendAPI(messageData);
+    });
+}
+
+function subscribeToEmails(recipientId, email) {
+  getUserInfo(recipientId)
+    .then(function success(userInfo) {
+      var subscriber = {
+        'email_address': email,
+        'status': 'subscribed',
+        'merge_fields': {
+          'FNAME': userInfo.first_name,
+          'LNAME': userInfo.last_name
+        }
+      };
+      console.log(subscriber);
+
+      var messageData = {
+        recipient: {
+          id: recipientId
+        },
+        message: {
+          text: `${subscriber.email_address} ${subscriber.merge_fields.FNAME} ${subscriber.merge_fields.LNAME}`
         }
       };
       callSendAPI(messageData);
@@ -478,7 +503,7 @@ function createQuestion(recipientId, pollData) {
  */
 function callSendAPI(messageData) {
   request({
-    uri: 'https://graph.facebook.com/v2.6/me/messages',
+    uri: 'https://graph.facebook.com/v2.9/me/messages',
     qs: { access_token: PAGE_ACCESS_TOKEN },
     method: 'POST',
     json: messageData
@@ -502,5 +527,5 @@ function callSendAPI(messageData) {
 }
 
 module.exports = {
-  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage, sendMeetingTopicPoll
+  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage, sendMeetingTopicPoll, subscribeToEmails
 };
