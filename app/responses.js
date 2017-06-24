@@ -447,6 +447,9 @@ function subscribeToEmails(recipientId, email) {
       var messageData = {
         recipient: {
           id: recipientId
+        },
+        message: {
+          text: ''
         }
       };
       const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -468,12 +471,11 @@ function callMailChimpAPI(newSubscriber, messageData) {
     },
     json: newSubscriber
   }, function (error, response, body) {
-    console.log(response);
-    console.log(body);
     if(error) {
+      console.log('body:', body);
       messageData.message.text = 'Sorry, that didn\'t work. Can you try again?';
     } else {
-      messageData.message.text = `${newSubscriber.email_address} was subscribed!`;
+      messageData.message.text = `${body.email_address} was subscribed!`;
     }
     callSendAPI(messageData);
   });
