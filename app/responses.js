@@ -436,7 +436,7 @@ function sendPersonalMessage(recipientId) {
 function subscribeToEmails(recipientId, email) {
   getUserInfo(recipientId)
     .then(function success(userInfo) {
-      var subscriber = {
+      var newSubscriber = {
         'email_address': email,
         'status': 'subscribed',
         'merge_fields': {
@@ -444,18 +444,39 @@ function subscribeToEmails(recipientId, email) {
           'LNAME': userInfo.last_name
         }
       };
-      console.log(subscriber);
-
       var messageData = {
         recipient: {
           id: recipientId
-        },
-        message: {
-          text: `${subscriber.email_address} ${subscriber.merge_fields.FNAME} ${subscriber.merge_fields.LNAME}`
         }
       };
-      callSendAPI(messageData);
+      const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      const validEmail = email && email.match(emailRegex);
+      if(validEmail) {
+        callMailChimpAPI(newSubscriber, messageData);
+      } else {
+        messageData.message.text = 'That email address doesn\'t seem quite right... Try again.';
+        callSendAPI(messageData);
+      }
     });
+}
+
+function callMailChimpAPI(newSubscriber, messageData) {
+  request.post('https://us15.api.mailchimp.com/3.0/lists/45f7988056/members/', {
+    auth: {
+      'user': 'username',
+      'pass': process.env.MAILCHIMP_KEY
+    },
+    json: newSubscriber
+  }, function (error, response, body) {
+    console.log(response);
+    console.log(body);
+    if(error) {
+      messageData.message.text = 'Sorry, that didn\'t work. Can you try again?';
+    } else {
+      messageData.message.text = `${newSubscriber.email_address} was subscribed!`;
+    }
+    callSendAPI(messageData);
+  });
 }
 
 function sendMeetingTopicPoll(recipientId) {
