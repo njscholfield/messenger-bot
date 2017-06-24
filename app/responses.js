@@ -410,7 +410,6 @@ function getUserInfo(recipientId) {
         console.log(error);
         resolve('Stranger');
       } else {
-        console.log(body);
         resolve(body);
       }
     });
@@ -471,12 +470,12 @@ function callMailChimpAPI(newSubscriber, messageData) {
     },
     json: newSubscriber
   }, function (error, response, body) {
-    if(body.status === 400 && body.title === 'Member Exists') {
-      messageData.message.text = 'Looks like that email address is already subscribed.';
-    } else if(error || body.status !== 200 || !body.email_address) {
-      messageData.message.text = 'Sorry, that didn\'t work. Can you try again?';
-    } else {
+    if(!error && body.status == 'subscribed' && body.email_address) {
       messageData.message.text = `${body.email_address} was subscribed!`;
+    } else if(body.status === 400 && body.title === 'Member Exists') {
+      messageData.message.text = `Looks like ${newSubscriber.email_address} is already subscribed.`;
+    } else {
+      messageData.message.text = 'Sorry, that didn\'t work. Can you try again?';
     }
     callSendAPI(messageData);
   });
