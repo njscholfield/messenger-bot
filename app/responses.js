@@ -471,8 +471,8 @@ function callMailChimpAPI(newSubscriber, messageData) {
     },
     json: newSubscriber
   }, function (error, response, body) {
+    console.log('body:', body);
     if(error) {
-      console.log('body:', body);
       messageData.message.text = 'Sorry, that didn\'t work. Can you try again?';
     } else {
       messageData.message.text = `${body.email_address} was subscribed!`;
