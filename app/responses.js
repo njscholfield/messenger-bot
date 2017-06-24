@@ -452,7 +452,7 @@ function subscribeToEmails(recipientId, email) {
           text: ''
         }
       };
-      const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const validEmail = email && email.match(emailRegex);
       if(validEmail) {
         callMailChimpAPI(newSubscriber, messageData);
@@ -471,8 +471,9 @@ function callMailChimpAPI(newSubscriber, messageData) {
     },
     json: newSubscriber
   }, function (error, response, body) {
-    console.log('body:', body);
-    if(error) {
+    if(body.status === 400 && body.title === 'Member Exists') {
+      messageData.message.text = 'Looks like that email address is already subscribed.';
+    } else if(error || body.status !== 200 || !body.email_address) {
       messageData.message.text = 'Sorry, that didn\'t work. Can you try again?';
     } else {
       messageData.message.text = `${body.email_address} was subscribed!`;
