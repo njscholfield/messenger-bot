@@ -6,48 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Results | Messenger Bot Management</title>
     <link rel="stylesheet" href="https://noahscholfield.com/css/bootstrap-yeti.min.css">
-    <link rel="stylesheet" href="../css/polls.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.1/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.min.js"></script>
+    <script src="https://use.fortawesome.com/8c4f3c3d.js"></script>
   </head>
   <body>
-    <div class="jumbotron">
-      <div class="container">
-        <h1>Poll Results</h1>
-      </div>
-    </div>
-    <div class="container">
-      <div id="results">
-        <div :class="{'panel panel-success' : (isLiveQ(result))}" v-for="result in sortedResults" :key="result._id">
-          <div class="panel-heading" v-if="isLiveQ(result)">
-            <h3 class="panel-title">Current Question</h3>
-          </div>
-          <div :class="{'panel-body': (isLiveQ(result))}">
-            <h3 class="text-primary">{{ result.title }}</h3>
-            <p>{{ result.question }}</p>
-            <table class="table">
-              <tr>
-                <th>Choice</th>
-                <th>Votes</th>
-                <th>Percentage</th>
-              </tr>
-              <tr v-for="choice in result.choices" :class="{info: (isGreatest(result, choice))}">
-                <td>{{ choice.name }}</td>
-                <td>{{ choice.numberOfVotes }}</td>
-                <td>{{ choice.numberOfVotes / result.numberOfVotes | percentage(2) }}</td>
-              </tr>
-            </table>
-            <h6>TOTAL NUMBER OF VOTES: {{ result.numberOfVotes }}</h6>
-            <div v-if="!isLiveQ(result)">
-              <button class="btn btn-success" @click="changeCurrent(result._id)">Make current question</button>
-              <button class="btn btn-danger" @click="deleteQ(result._id)">Delete</button>
-              <hr>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <div id="results"></div>
+    <script src="../js/results/bundle.min.js"></script>
   </body>
-  <script src="../js/results.js"></script>
 </html>
