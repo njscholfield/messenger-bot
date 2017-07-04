@@ -10,6 +10,7 @@
       <div id="refresh">
         <button class="btn btn-primary" @click="getResults"><span class="glyphicon glyphicon-refresh"></span></button>
       </div>
+      <alerts></alerts>
       <div id="results">
         <h3 class="text-info text-center" v-if="!results || results.length === 0">There are no polls to show :/ <em>Try <a href="/new-poll/">creating one</a>!</em></h3>
         <poll v-for="result in sortedResults" :key="result._id" :isLiveQ="isLiveQ(result)" :result="result" @refresh="getResults">
@@ -21,12 +22,13 @@
 
 <script>
   import navbar from '../navbar.vue';
+  import alerts from '../alerts/alerts.vue';
   import poll from './poll.vue';
-  
+
   module.exports = {
     name: 'results',
     components: {
-      navbar, poll
+      navbar, poll, alerts
     },
     data: function() {
       return {
@@ -42,7 +44,7 @@
             this.results = data.results;
             this.liveQuestionID = data.liveQuestionID;
           })
-          .catch(err => console.log(err));
+          .catch(() => this.$emit('alert', {type: 'error', message: 'Can\'t get the results... Check your connection and try again!'}));
       },
       isLiveQ(result) {
         return result._id === this.liveQuestionID;

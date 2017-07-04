@@ -72,7 +72,7 @@
               this.$emit('alert', {type: 'error', message: data.message});
               this.errors = data.fields;
             }
-          });
+          }).catch(() => this.$emit('alert', {type: 'error', message: 'That didn\'t work... Check your connection and try again!'}));
       },
       resetForm(clearData) {
         this.$emit('alert', {type: 'reset'});

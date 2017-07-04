@@ -49,7 +49,7 @@
               this.$emit('refresh');
             } else { console.log(data.message); }
           })
-          .catch(err => console.log(err));
+          .catch(() => this.$parent.$emit('alert', {type: 'error', message: 'Can\'t change the current poll... Check your connection and try again!'}));
       },
       deleteQ(id) {
         var config = {
@@ -64,7 +64,7 @@
               this.$emit('refresh');
             } else { console.log(data.message); }
           })
-          .catch(err => console.log(err));
+          .catch(() => this.$parent.$emit('alert', {type: 'error', message: 'Can\'t delete the poll... Check your connection and try again!'}));
       },
       isGreatest(result, choice) {
         var votes = result.choices.map(item => item.numberOfVotes);
