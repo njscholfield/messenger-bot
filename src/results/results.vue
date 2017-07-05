@@ -43,8 +43,9 @@
           .then(data => {
             this.results = data.results;
             this.liveQuestionID = data.liveQuestionID;
+            this.$emit('alert', {type: 'reset'});
           })
-          .catch(() => this.$emit('alert', {type: 'error', message: 'Can\'t get the results... Check your connection and try again!'}));
+          .catch(() => this.$emit('alert', {type: 'error', message: 'Can\'t get poll results... Check your connection and try again!'}));
       },
       isLiveQ(result) {
         return result._id === this.liveQuestionID;
