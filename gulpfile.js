@@ -9,7 +9,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var eventStream = require('event-stream');
 
-var files = ['results', 'new-poll'];
+var files = ['results', 'new-poll', 'home'];
 
 if(gutil.env.production === true) {
   process.env.NODE_ENV = 'production';
@@ -37,9 +37,9 @@ gulp.task('watch', function() {
 function getWatchifyHandler(bundler, folder) {
   return function() {
     return bundler.bundle()
-    .pipe(source('bundle.min.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest(`./public/js/${folder}`));
+      .pipe(source('bundle.min.js'))
+      .pipe(buffer())
+      .pipe(gulp.dest(`./public/js/${folder}`));
   };
 }
 
@@ -53,14 +53,14 @@ gulp.task('build', function() {
       debug: false,
       transform: [vueify, ['envify', {global: true}]]
     })
-    .bundle()
-    .pipe(source('bundle.min.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
+      .bundle()
+      .pipe(source('bundle.min.js'))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(uglify())
       .on('error', gutil.log)
-    .pipe(sourcemaps.write(''))
-    .pipe(gulp.dest(`./public/js/${folder}`));
+      .pipe(sourcemaps.write(''))
+      .pipe(gulp.dest(`./public/js/${folder}`));
   });
 
   return eventStream.merge(streams);

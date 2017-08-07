@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 mongoose.Promise = global.Promise;
 
@@ -30,6 +31,23 @@ var currentSchema = mongoose.Schema({
 });
 var current = mongoose.model('current', currentSchema);
 
+//user sechema
+var userSchema = mongoose.Schema({
+  email: {type: String, index: { unique: true }},
+  password: {type: String},
+  username: {type: String, index: { unique: true }},
+});
+
+userSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(12), null);
+};
+
+userSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
+
+var user = mongoose.model('user', userSchema);
+
 module.exports = {
-  poll, choice, current
+  poll, choice, current, user
 };

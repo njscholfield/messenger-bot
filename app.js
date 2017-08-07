@@ -12,20 +12,36 @@
 /* jshint node: true, devel: true */
 'use strict';
 
-const
-  bodyParser = require('body-parser'),
-  crypto = require('crypto'),
-  express = require('express'),
-  https = require('https'),
-  responses = require('./app/responses.js');
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
+const express = require('express');
+const https = require('https');
+const responses = require('./app/responses.js');
+const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const passport = require('passport');
+const flash = require('connect-flash');
+const app = express();
 
-var app = express();
+require('./app/passport.js')(passport);
+
+var sess = { store: new RedisStore({url: process.env.REDIS_URL}), secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false, name: 'sessionID', cookie: {}};
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1);
+  sess.cookie.secure = true;
+}
+
 app.set('port', process.env.PORT || 5000);
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(session(sess));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static('public'));
+app.use(flash());
 
-require('./app/routes.js')(app);
+require('./app/routes.js')(app, passport);
 const polls = require('./app/polls.js');
 
 /*
@@ -158,8 +174,8 @@ function verifyRequestSignature(req, res, buf) {
     var signatureHash = elements[1];
 
     var expectedHash = crypto.createHmac('sha1', APP_SECRET)
-                        .update(buf)
-                        .digest('hex');
+      .update(buf)
+      .digest('hex');
 
     if (signatureHash != expectedHash) {
       throw new Error("Couldn't validate the request signature.");
@@ -188,8 +204,7 @@ function receivedAuthentication(event) {
   var passThroughParam = event.optin.ref;
 
   console.log("Received authentication for user %d and page %d with pass " +
-    "through param '%s' at %d", senderID, recipientID, passThroughParam,
-    timeOfAuth);
+    "through param '%s' at %d", senderID, recipientID, passThroughParam, timeOfAuth);
 
   // When an authentication is received, we'll send a message back to the sender
   // to let them know it was successful.

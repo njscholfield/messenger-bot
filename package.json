@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "lint": "jshint --exclude node_modules .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify -t vueify -e src/main.js -o public/js/bundle.js"
+    "test": "gulp watch",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
@@ -16,10 +16,16 @@
   "author": "Facebook",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.15.0",
+    "connect-flash": "^0.1.1",
+    "connect-redis": "^3.3.0",
     "ejs": "^2.4.2",
     "express": "^4.13.4",
+    "express-session": "^1.15.5",
     "mongoose": "^4.9.7",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "request": "^2.72.0",
     "vue": "^2.3.4",
     "whatwg-fetch": "^2.0.3"
