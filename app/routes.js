@@ -18,9 +18,17 @@ module.exports = function(app, passport) {
     polls.changeCurrent(req, res);
   });
 
+  app.options('/api/mailchimp/', function(req, res) {
+    res.header('Access-Control-Allow-Origin', 'https://secularpitt.club');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.sendStatus(200);
+  });
+
   app.post('/api/mailchimp/', function(req, res) {
+    res.header('Access-Control-Allow-Origin', 'https://secularpitt.club');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     var newSubscriber = req.body;
-    var response = {success: false};
     request.post('https://us15.api.mailchimp.com/3.0/lists/45f7988056/members/', {
       auth: {
         'user': 'username',
@@ -29,15 +37,13 @@ module.exports = function(app, passport) {
       json: newSubscriber
     }, function (error, response, body) {
       if(!error && body.status == 'subscribed' && body.email_address) {
-        response.success = true;
-        response.message = `${body.email_address} was subscribed!`;
+        res.json({success: true, message: `${body.email_address} was subscribed!`});
       } else if(body.status === 400 && body.title === 'Member Exists') {
-        response.message = `Looks like ${newSubscriber.email_address} is already subscribed.`;
+        res.json({success: false, message: `Looks like ${newSubscriber.email_address} is already subscribed.`});
       } else {
-        response.message = 'Sorry, that didn\'t work. Can you try again?';
+        res.json({success: false, message: 'Sorry, that didn\'t work. Can you try again?'});
       }
     });
-    res.json(response);
   });
 
   app.get('/register/', function(req, res) {
