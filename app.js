@@ -335,6 +335,10 @@ function receivedMessage(event) {
       case 'email':
         responses.subscribeToEmails(senderID, messageText[1]);
         break;
+        
+      case 'farts':
+        responses.farts(senderID);
+        break;
 
       default:
         responses.sendTextMessage(senderID, messageText);

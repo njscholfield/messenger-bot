@@ -519,6 +519,21 @@ function createQuestion(recipientId, pollData) {
   callSendAPI(messageData);
 }
 
+function farts(recipientId) {
+  var message = `farts`;
+  var messageData = {
+    recipient: {
+      id: recipientId
+    },
+    message: {
+      text: message
+    }
+  };
+  for(var i = 0; i < 10; i++) {
+    callSendAPI(messageData);
+  }
+}
+
 /*
  * Call the Send API. The message data goes in the body. If successful, we'll
  * get the message id in a response
