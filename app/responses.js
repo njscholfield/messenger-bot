@@ -564,5 +564,5 @@ function callSendAPI(messageData) {
 }
 
 module.exports = {
-  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage, sendMeetingTopicPoll, subscribeToEmails
+  sendImageMessage, sendGifMessage, sendVideoMessage, sendTextMessage, sendTypingOff, sendTypingOn, sendAccountLinking, sendQuickReply, sendReadReceipt, sendReceiptMessage, sendAudioMessage, sendFileMessage, sendButtonMessage, sendGenericMessage, sendPersonalMessage, sendMeetingTopicPoll, subscribeToEmails, farts
 };
